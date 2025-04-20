@@ -1,6 +1,7 @@
 package org.rbarnard.mindmaze.maze;
 
 import java.util.List;
+import java.io.PrintWriter;
 import java.lang.StringBuilder;
 
 public class Maze {
@@ -10,8 +11,7 @@ public class Maze {
         this.maze = maze;
     }
 
-    public void renderMaze() {
-        System.out.println(maze);
+    public void renderMaze(PrintWriter out) {
         StringBuilder sb = new StringBuilder();
         for (List<Integer> row : maze) {
             for (Integer space : row) {
@@ -23,6 +23,6 @@ public class Maze {
             }
             sb.append("\n");
         }
-        System.out.print(sb.toString());
+        out.print(sb.toString());
     }
 }

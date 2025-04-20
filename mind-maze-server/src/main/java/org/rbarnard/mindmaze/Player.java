@@ -1,4 +1,4 @@
-package org.rbarnard.mindmaze
+package org.rbarnard.mindmaze;
 
 public class Player {
     public Player() {
