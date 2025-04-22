@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.rbarnard.mindmaze.messaging.handlers.MessageHandler;
+import org.rbarnard.mindmaze.messaging.handlers.NewGameRequestHandler;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 

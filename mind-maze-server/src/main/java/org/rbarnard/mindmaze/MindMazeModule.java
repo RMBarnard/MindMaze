@@ -1,7 +1,7 @@
 package org.rbarnard.mindmaze;
 
 import org.rbarnard.mindmaze.messaging.MessageHandlerRegistry;
-import org.rbarnard.mindmaze.messaging.NewGameRequestHandler;
+import org.rbarnard.mindmaze.messaging.handlers.NewGameRequestHandler;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;

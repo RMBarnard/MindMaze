@@ -1,4 +1,4 @@
-package org.rbarnard.mindmaze.messaging;
+package org.rbarnard.mindmaze.messaging.handlers;
 
 import jakarta.websocket.Session;
 

@@ -2,6 +2,8 @@ package org.rbarnard.mindmaze.messaging;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Message implements Serializable {
     private int typeId;
     private String payloadJson;
