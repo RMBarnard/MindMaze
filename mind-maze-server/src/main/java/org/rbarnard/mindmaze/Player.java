@@ -1,7 +1,10 @@
 package org.rbarnard.mindmaze;
 
 public class Player {
-    public Player() {
+    private int id;
+
+    public int getId() {
+        return id;
     }
 
 }

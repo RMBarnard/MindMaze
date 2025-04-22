@@ -3,15 +3,15 @@ package org.rbarnard.mindmaze.messaging;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-    private MessageType typeTag;
+    private int typeId;
     private String payloadJson;
 
-    public MessageType getTypeTag() {
-        return typeTag;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setTypeTag(MessageType typeTag) {
-        this.typeTag = typeTag;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public String getPayloadJson() {
