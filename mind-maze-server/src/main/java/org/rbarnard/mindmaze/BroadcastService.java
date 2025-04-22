@@ -38,8 +38,9 @@ public class BroadcastService {
         synchronized (session) {
             try {
                 session.getBasicRemote().sendObject(message);
+                LOG.info("Message sent");
             } catch (Exception e) {
-                LOG.error("Error sending message to player");
+                LOG.error("Error sending message to player", e);
             }
         }
     }

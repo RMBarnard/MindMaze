@@ -8,11 +8,13 @@ public enum MessageType {
     NEW_GAME_RESPONSE(2, MessageDirection.SERVER_TO_CLIENT),
     JOIN_GAME_REQUEST(3, MessageDirection.CLIENT_TO_SERVER),
     JOIN_GAME_RESPONSE(4, MessageDirection.SERVER_TO_CLIENT),
-    GAME_LOBBY_UPDATE_RESPONSE(4, MessageDirection.SERVER_TO_CLIENT),
-    GAME_START(5, MessageDirection.SERVER_TO_CLIENT),
-    GAME_END(6, MessageDirection.SERVER_TO_CLIENT),
-    LEAVE_GAME_REQUEST(7, MessageDirection.CLIENT_TO_SERVER),
-    LEAVE_GAME_RESPONSE(8, MessageDirection.SERVER_TO_CLIENT),
+    GAME_LOBBY_UPDATE_RESPONSE(5, MessageDirection.SERVER_TO_CLIENT),
+    GAME_START(6, MessageDirection.SERVER_TO_CLIENT),
+    GAME_END(7, MessageDirection.SERVER_TO_CLIENT),
+    LEAVE_GAME_REQUEST(8, MessageDirection.CLIENT_TO_SERVER),
+    LEAVE_GAME_RESPONSE(9, MessageDirection.SERVER_TO_CLIENT),
+    GAME_INFO_REQUEST(10, MessageDirection.CLIENT_TO_SERVER),
+    GAME_INFO_RESPONSE(11, MessageDirection.SERVER_TO_CLIENT),
     ;
 
     private int typeId;

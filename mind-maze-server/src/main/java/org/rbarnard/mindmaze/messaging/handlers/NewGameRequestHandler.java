@@ -1,5 +1,6 @@
 package org.rbarnard.mindmaze.messaging.handlers;
 
+import org.rbarnard.mindmaze.BroadcastService;
 import org.rbarnard.mindmaze.Game;
 import org.rbarnard.mindmaze.GameRegistry;
 import org.rbarnard.mindmaze.Player;
@@ -22,12 +23,15 @@ public class NewGameRequestHandler implements MessageHandler<NewGameRequest> {
     private static final Logger LOG = LoggerFactory.getLogger(NewGameRequestHandler.class);
     private final GameRegistry gameRegistry;
     private final SessionRegistry sessionRegistry;
+    private final BroadcastService broadcastService;
     private final ObjectMapper om;
 
     @Inject
-    public NewGameRequestHandler(GameRegistry gameRegistry, SessionRegistry sessionRegistry) {
+    public NewGameRequestHandler(GameRegistry gameRegistry, SessionRegistry sessionRegistry,
+            BroadcastService broadcastService) {
         this.gameRegistry = gameRegistry;
         this.sessionRegistry = sessionRegistry;
+        this.broadcastService = broadcastService;
         this.om = new ObjectMapper();
     }
 
@@ -42,6 +46,7 @@ public class NewGameRequestHandler implements MessageHandler<NewGameRequest> {
             Maze maze = mazeLoader.loadMaze(mapSize + "/maze_1.txt");
             Game game = new Game(maze, session, new Player()); // TODO: PlayerRegistry
             gameRegistry.addGame(game.getShortId(), game);
+            payload.setJoinCode(game.getShortId());
             payload.setSuccess(true);
         } catch (Exception e) {
             payload.setSuccess(false);
@@ -49,6 +54,7 @@ public class NewGameRequestHandler implements MessageHandler<NewGameRequest> {
         }
         try {
             response.setPayloadJson(om.writeValueAsString(payload));
+            broadcastService.broadcastToPlayer(response, session);
         } catch (Exception e) {
             LOG.error("Unable to send message back to client ", e);
         }
