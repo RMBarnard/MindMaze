@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MazeLoader {
-    public Maze loadMaze(String filename) throws IOException {
+    public Maze loadMaze(String size, String filename) throws IOException {
         List<List<Integer>> mazeArray = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(getClass().getResourceAsStream("/mazes/" + filename)))) {
+                new InputStreamReader(getClass().getResourceAsStream("/mazes/" + size + filename)))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] splitLine = line.split(",");
@@ -23,6 +23,6 @@ public class MazeLoader {
         } catch (IOException e) {
             throw e;
         }
-        return new Maze(mazeArray);
+        return new Maze(mazeArray, size);
     }
 }

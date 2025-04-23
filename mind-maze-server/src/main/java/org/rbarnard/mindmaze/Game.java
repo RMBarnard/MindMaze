@@ -51,6 +51,10 @@ public class Game {
         return shortId;
     }
 
+    public String getMapSize() {
+        return this.maze.getSize();
+    }
+
     public void start() {
         isRunning = true;
     }
@@ -75,5 +79,9 @@ public class Game {
         }
 
         return sb.toString();
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }

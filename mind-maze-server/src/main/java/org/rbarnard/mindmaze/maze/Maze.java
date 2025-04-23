@@ -6,9 +6,15 @@ import java.lang.StringBuilder;
 
 public class Maze {
     private List<List<Integer>> maze;
+    private String size;
 
-    public Maze(List<List<Integer>> maze) {
+    public Maze(List<List<Integer>> maze, String size) {
         this.maze = maze;
+        this.size = size;
+    }
+
+    public String getSize() {
+        return size;
     }
 
     public void renderMaze(PrintWriter out) {

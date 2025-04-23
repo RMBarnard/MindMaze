@@ -43,7 +43,7 @@ public class NewGameRequestHandler implements MessageHandler<NewGameRequest> {
         String mapSize = request.getMapSize();
         MazeLoader mazeLoader = new MazeLoader();
         try {
-            Maze maze = mazeLoader.loadMaze(mapSize + "/maze_1.txt");
+            Maze maze = mazeLoader.loadMaze(mapSize, "/maze_1.txt");
             Game game = new Game(maze, session, new Player()); // TODO: PlayerRegistry
             gameRegistry.addGame(game.getShortId(), game);
             payload.setJoinCode(game.getShortId());
