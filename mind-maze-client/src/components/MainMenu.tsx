@@ -1,48 +1,60 @@
+import { useEffect, useContext } from "react";
+import { WebSocketContext } from "../WebSocketProvider";
+import { NewGameResponse, ServerToClientMessage } from "../types";
 import { useNavigate } from "react-router-dom";
-import { GameSocketClient } from "../GameSocketClient";
-import { useEffect, useRef } from "react";
-import { ServerToClientMessage, ClientToServerMessage } from "../types";
-import { getOrCreateUserId } from "../getOrCreateUserId";
-
 
 function MainMenu() {
   const navigate = useNavigate();
-  const socketRef = useRef<GameSocketClient | null>(null);
+  const [joinCode, setJoinCode] = useState("");
+  const socketClient = useContext(WebSocketContext);
 
   useEffect(() => {
-    const userId = getOrCreateUserId();
-    const client = new GameSocketClient(userId, handleMessage);
-    socketRef.current = client;
-    return () => client.close();
-  }, []);
+    if (!socketClient) return;
 
-  const handleMessage = (msg: ServerToClientMessage) => {
-    if (msg.typeId === 2) {
+    const handleMessage = (msg: ServerToClientMessage) => {
+      console.log("MainMenu received:", msg);
       const response: NewGameResponse = JSON.parse(msg.payloadJson);
-      console.log(response);
       if (response.success) {
         navigate(`/lobby/${response.joinCode}`);
-      } else {
-        alert("Failed to create game.");
-      }
+      };
     }
+
+    socketClient.subscribe(handleMessage);
+
+    return () => {
+      socketClient.unsubscribe(handleMessage);
+    };
+  }, [socketClient]);
+
+  const createGame = (mapSize: string) => {
+    socketClient?.send({
+      typeId: 1, // NEW_GAME_REQUEST
+      payloadJson: JSON.stringify({ mapSize }),
+    });
   };
 
-  const createGame = (size: string) => {
-    const payload = JSON.stringify({ mapSize: size });
-    socketRef.current?.send({
-      typeId: 1,
-      payloadJson: payload,
+  const joinGame = (joinCode: string) => {
+    socketClient?.send({
+      typeId: 3,
+      payloadJson: JSON.stringify({ joinCode }),
     });
   };
 
   return (
     <div>
       <h1>MindMaze</h1>
-      <p>Select a map size to start a new game:</p>
-      <button onClick={() => createGame("small")}>Small</button>
-      <button onClick={() => createGame("medium")}>Medium</button>
-      <button onClick={() => createGame("large")}>Large</button>
+      <button onClick={() => createGame("small")}>New Game (Small)</button>
+      <button onClick={() => createGame("medium")}>New Game (Medium)</button>
+      <button onClick={() => createGame("large")}>New Game (Large)</button>
+
+      <h2>Join Game</h2>
+      <input
+        type="text"
+        placeholder="Enter Join Code"
+        value={joinCode}
+        onChange={(e) => setJoinCode(e.target.value)}
+      />
+      <button onClick={handleJoinGame}>Join Game</button>
     </div>
   );
 }

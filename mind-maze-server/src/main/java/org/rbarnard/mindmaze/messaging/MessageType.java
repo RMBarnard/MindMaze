@@ -15,6 +15,7 @@ public enum MessageType {
     LEAVE_GAME_RESPONSE(9, MessageDirection.SERVER_TO_CLIENT),
     GAME_INFO_REQUEST(10, MessageDirection.CLIENT_TO_SERVER),
     GAME_INFO_RESPONSE(11, MessageDirection.SERVER_TO_CLIENT),
+    LOBBY_INFO_RESPONSE(12, MessageDirection.SERVER_TO_CLIENT),
     ;
 
     private int typeId;

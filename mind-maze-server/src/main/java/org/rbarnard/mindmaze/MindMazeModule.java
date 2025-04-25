@@ -1,6 +1,8 @@
 package org.rbarnard.mindmaze;
 
 import org.rbarnard.mindmaze.messaging.MessageHandlerRegistry;
+import org.rbarnard.mindmaze.messaging.handlers.GameInfoRequestHandler;
+import org.rbarnard.mindmaze.messaging.handlers.JoinGameRequestHandler;
 import org.rbarnard.mindmaze.messaging.handlers.NewGameRequestHandler;
 
 import com.google.inject.AbstractModule;
@@ -14,5 +16,7 @@ public class MindMazeModule extends AbstractModule {
         bind(SessionRegistry.class).in(Singleton.class);
         bind(BroadcastService.class).in(Singleton.class);
         bind(NewGameRequestHandler.class).in(Singleton.class);
+        bind(GameInfoRequestHandler.class).in(Singleton.class);
+        bind(JoinGameRequestHandler.class).in(Singleton.class);
     }
 }

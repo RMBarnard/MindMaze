@@ -42,7 +42,7 @@ public class GameInfoRequestHandler implements MessageHandler<GameInfoRequest> {
                     .toList();
             LobbyInfoResponse lobbyInfoResponse = new LobbyInfoResponse(playerIds, game.getShortId(),
                     game.getMapSize());
-            response.setTypeId(MessageType.GAME_INFO_RESPONSE.getTypeId());
+            response.setTypeId(MessageType.LOBBY_INFO_RESPONSE.getTypeId());
             try {
                 response.setPayloadJson(objectMapper.writeValueAsString(lobbyInfoResponse));
             } catch (Exception e) {

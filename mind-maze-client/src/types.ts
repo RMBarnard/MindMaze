@@ -1,7 +1,8 @@
-export type ClientToServerMessage =
-  | { typeId: 1; payloadJson: { mapSize: string }}; // NEW_GAME_REQUEST
-  | { typeId: 3; payloadJson: { joinCode: string; playerCount: number; mapSize: mapSize; }
+export type NewGameRequest = { mapSize: string };
+export type JoinGameRequest = { joinCode: string; playerCount: number; mapSize: string };
 
-export type ServerToClientMessage =
-  | { typeId: 0; payloadJson: string } // CONNECT
-  | { typeId: 2; payloadJson: { success: boolean; joinCode: string }} // NEW_GAME_RESPONSE 
+export type ClientToServerMessage = { typeId: number; payloadJson: string }
+
+export type NewGameResponse = { success: boolean; joinCode: string };
+
+export type ServerToClientMessage = { typeId: number; payloadJson: string }

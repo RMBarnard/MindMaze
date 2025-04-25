@@ -1,37 +1,39 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { GameSocketClient } from "../GameSocketClient";
 import { ServerToClientMessage, ClientToServerMessage } from "../types";
 import { getOrCreateUserId } from "../getOrCreateUserId";
+import { WebSocketContext } from "../WebSocketProvider";
 
 function Lobby() {
   const { joinCode } = useParams();
   const [players, setPlayers] = useState<string[]>([]);
-  const socketRef = useRef<GameSocketClient | null>(null);
+  const [mapSize, setMapSize] = useState<string>("");
+  const socket = useContext(WebSocketContext);
 
   useEffect(() => {
-    const userId = getOrCreateUserId();
-    const client = new GameSocketClient(userId, handleMessage);
-    socketRef.current = client;
-
-    client.send({
-      type: 10,
+    socket?.send({
+      typeId: 10,
       payloadJson: JSON.stringify({ joinCode }),
     });
 
-    return () => client.close();
-  }, [joinCode]);
+    const handleMessage = (msg: ServerToClientMessage) => {
+      console.log("received message " + JSON.stringify(msg));
+      if (msg.typeId === 12) {
+        const data = JSON.parse(msg.payloadJson);
+        setPlayers(data.joinedPlayerIds); // Expecting `players: string[]` in payload
+        setMapSize(data.mapSize);
+      }
+    };
 
-  const handleMessage = (msg: ServerToClientMessage) => {
-    if (msg.type === 11) {
-      const data = JSON.parse(msg.payloadJson);
-      setPlayers(data.players); // Expecting `players: string[]` in payload
-    }
-  };
+    socket?.subscribe(handleMessage)
+
+  }, [joinCode]);
 
   return (
     <div>
       <h2>Lobby: {joinCode}</h2>
+      <h3>Map Size: {mapSize}</h3>
       <h3>Players:</h3>
       <ul>
         {players.map((p, i) => (

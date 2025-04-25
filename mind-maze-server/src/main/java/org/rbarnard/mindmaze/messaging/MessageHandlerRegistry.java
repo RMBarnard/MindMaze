@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.rbarnard.mindmaze.messaging.handlers.GameInfoRequestHandler;
+import org.rbarnard.mindmaze.messaging.handlers.JoinGameRequestHandler;
 import org.rbarnard.mindmaze.messaging.handlers.MessageHandler;
 import org.rbarnard.mindmaze.messaging.handlers.NewGameRequestHandler;
 
@@ -17,10 +19,13 @@ public class MessageHandlerRegistry {
     private final Map<MessageType, HandlerEntry<?>> handlers;
 
     @Inject
-    public MessageHandlerRegistry(NewGameRequestHandler newGameRequestHandler) {
+    public MessageHandlerRegistry(NewGameRequestHandler newGameRequestHandler,
+            GameInfoRequestHandler gameInfoRequestHandler, JoinGameRequestHandler joinGameRequestHandler) {
         mapper = new ObjectMapper();
         handlers = new ConcurrentHashMap<>();
         register(MessageType.NEW_GAME_REQUEST, NewGameRequest.class, newGameRequestHandler);
+        register(MessageType.GAME_INFO_REQUEST, GameInfoRequest.class, gameInfoRequestHandler);
+        register(MessageType.JOIN_GAME_REQUEST, JoinGameRequest.class, joinGameRequestHandler);
     }
 
     private <T> void register(MessageType type, Class<T> payloadClass, MessageHandler<T> handler) {
