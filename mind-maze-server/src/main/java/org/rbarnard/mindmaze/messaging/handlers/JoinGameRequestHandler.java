@@ -35,6 +35,7 @@ public class JoinGameRequestHandler implements MessageHandler<JoinGameRequest> {
         try {
             JoinGameResponse joinGameResponse = new JoinGameResponse();
             joinGameResponse.setSuccess(success);
+            joinGameResponse.setJoinCode(game.getShortId());
             playerResponse.setTypeId(MessageType.JOIN_GAME_RESPONSE.getTypeId());
             playerResponse.setPayloadJson(objectMapper.writeValueAsString(joinGameResponse));
             broadcastService.broadcastToPlayer(playerResponse, session);

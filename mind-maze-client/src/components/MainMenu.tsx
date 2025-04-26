@@ -1,22 +1,24 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { WebSocketContext } from "../WebSocketProvider";
-import { NewGameResponse, ServerToClientMessage } from "../types";
+import { NewGameResponse, ServerToClientMessage, JoinGameResponse } from "../types";
 import { useNavigate } from "react-router-dom";
 
 function MainMenu() {
   const navigate = useNavigate();
-  const [joinCode, setJoinCode] = useState("");
+  const [joinId, setJoinCode] = useState("");
   const socketClient = useContext(WebSocketContext);
 
   useEffect(() => {
     if (!socketClient) return;
 
     const handleMessage = (msg: ServerToClientMessage) => {
-      console.log("MainMenu received:", msg);
-      const response: NewGameResponse = JSON.parse(msg.payloadJson);
-      if (response.success) {
-        navigate(`/lobby/${response.joinCode}`);
-      };
+      if (msg.typeId === 2 || msg.typeId === 4) {
+        console.log("MainMenu received:", msg);
+        const response: NewGameResponse = JSON.parse(msg.payloadJson);
+        if (response.success) {
+          navigate(`/lobby/${response.joinCode}`);
+        };
+      }
     }
 
     socketClient.subscribe(handleMessage);
@@ -33,10 +35,10 @@ function MainMenu() {
     });
   };
 
-  const joinGame = (joinCode: string) => {
+  const joinGame = () => {
     socketClient?.send({
       typeId: 3,
-      payloadJson: JSON.stringify({ joinCode }),
+      payloadJson: JSON.stringify({ joinId }),
     });
   };
 
@@ -51,10 +53,10 @@ function MainMenu() {
       <input
         type="text"
         placeholder="Enter Join Code"
-        value={joinCode}
+        value={joinId}
         onChange={(e) => setJoinCode(e.target.value)}
       />
-      <button onClick={handleJoinGame}>Join Game</button>
+      <button onClick={joinGame}>Join Game</button>
     </div>
   );
 }
